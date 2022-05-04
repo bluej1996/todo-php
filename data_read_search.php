@@ -1,10 +1,10 @@
-<?php
+<?php 
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: access");
     header("Access-Control-Allow-Methods: GET,POST");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
+    
     $host = 'localhost';
     $user = 'bluej1996';
     $pw = 'pwa407!!';
@@ -14,13 +14,14 @@
     // 페이지 리스트 
     $page_now = $_GET["page_now"];
     $data_count = $_GET["data_count"];
+    $title = $_GET["title"];
     // 시작 번호
     $start_count = ($page_now - 1) * $data_count;
 
     // 기본 클라이언트 문자 셋 설정
     mysqli_set_charset($conn, "utf-8");
     // 데이터를 읽어오는 SQL 구문
-    $sql = "SELECT * FROM todo ORDER BY id DESC LIMIT $start_count, $data_count";
+    $sql = "SELECT * FROM todo WHERE title LIKE '%$title%' ORDER BY id DESC LIMIT $start_count, $data_count";
     // QUERY 를 실행
     $res = mysqli_query($conn, $sql);
     $result = array();

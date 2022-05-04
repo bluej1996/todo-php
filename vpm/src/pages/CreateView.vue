@@ -20,7 +20,7 @@
 
           <div class="btn-group" role="group">
             <button type="subject" class="btn btn-success">확인</button>
-            <button type="button" class="btn btn-warning">취소</button>
+            <button type="button" class="btn btn-warning" @click="moveList">취소</button>
           </div>
         </form>
       </div>
@@ -31,31 +31,53 @@
 <script>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from '@/composables/toast.js'
 export default {
+  components: {
+  },
   setup(){
     const router = useRouter();
     const todo = reactive({
       title: '',
       body: ''
   });
+
+  const {
+    toastMessage,
+    toastShow,
+    triggerToast
+  } = useToast();
+
   const onSubmit = () => {
-    console.log(todo);
+    if(!todo.title) {
+      triggerToast('제목을 입력하세요.')
+      return;
+    }
+    if(!todo.body){
+      triggerToast('내용을 입력하세요.')
+      return;
+    }
     fetch(`http://bluej1996.dothome.co.kr/data_add.php?title=${todo.title}&body=${todo.body}`)
       .then(res => res.json())
       .then(data => {
         if(data.result == 1) {
           // list 화면으로 이동한다.
-          router.push('/list')
+          router.push({name: 'List'})
         }else{
           console.log("서버에서 자료가 오지 않음")
         }
       })
       .catch()
   }
-  
+  const moveList = () => {
+    router.push({name: 'List'});
+  }
     return {
       todo,
-      onSubmit
+      onSubmit,
+      moveList,
+      toastMessage,
+      toastShow
     }
   }
 }

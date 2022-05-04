@@ -11,19 +11,11 @@
     $db = 'bluej1996';
     $conn = mysqli_connect($host, $user, $pw, $db);
 
-    $id = $_GET["id"];
-    $title = $_GET["title"];
-    $body = $_GET["body"];
-    $complete = $_GET["complete"];
-    // 데이터를 삽입하는 SQL 구문
-    $sql = "UPDATE todo SET title='{$title}', body='{$body}', complete='{$complete}' WHERE id='{$id}'";
+    $sql = "SELECT * FROM todo";
     $result = mysqli_query($conn, $sql);
-
-    if($result) {
-        echo json_encode(["result" => 1]);
-    }else{
-        echo json_encode(["result" => 0]);
-    }
+    $total = mysqli_num_rows($result);
+    
+    echo json_encode(["total" => $total]);
 
     mysqli_close($conn);
 
