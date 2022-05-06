@@ -27,8 +27,11 @@
         v-if="showModal"
         @close="closeModal"
         @delete="deleteTodo"
-        />
-    </teleport>
+        >
+        <template v-slot:title>삭제</template>
+        <template v-slot:body>정말 삭제하시겠습니까?</template>
+    </ModalWin>
+  </teleport>
 </template>
 
 <script>
